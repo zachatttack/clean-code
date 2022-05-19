@@ -12,7 +12,7 @@ type rover struct {
 
 func main() {
 	// input := "MMRMMLM"
-	input := "MMRMMLM"
+	input := "MMMMMMMMMM"
 
 	mars := rover{
 		row:     0,
@@ -40,18 +40,30 @@ func parseInput(input string, mars *rover) {
 func rowUpdate(mars *rover) {
 	if mars.heading == "N" {
 		mars.row = mars.row + 1
+    if mars.row == 10 {
+      mars.row = 0
+    }
 	}
 	if mars.heading == "S" {
 		mars.row = mars.row - 1
+    if mars.row == -1{
+      mars.row = 9
+    }
 	}
 }
 
 func colUpdate(mars *rover) {
 	if mars.heading == "E" {
 		mars.column = mars.column + 1
+    if mars.column == 10 {
+      mars.column = 0
+    }
 	}
 	if mars.heading == "W" {
 		mars.column = mars.column - 1
+    if mars.column == -1{
+      mars.column = 9
+    }
 	}
 }
 
