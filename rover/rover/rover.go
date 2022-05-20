@@ -1,4 +1,4 @@
-package main
+package rover
 
 import (
 	"fmt"
@@ -8,16 +8,6 @@ type Rover struct {
 	column  int
 	row     int
 	heading string
-}
-
-func main() {
-	input := "MMRMMLM"
-	// input := "MMMMMMMMMM"
-
-  mars := new(Rover)
-  mars.Init()
-	mars.CommandRover(input)
-  mars.GetPosition()
 }
 
 func (r *Rover) Init(){
@@ -45,36 +35,58 @@ func (r *Rover) CommandRover(input string) {
 
 func (r *Rover) rowUpdate() {
 	if r.heading == "N" {
-		r.row = r.row + 1
-    if r.row == 10 {
-      r.row = 0
-    }
+    r.increaseRowValue()
 	}
 	if r.heading == "S" {
-		r.row = r.row - 1
-    if r.row == -1{
-      r.row = 9
-    }
+    r.decreaseRowValue()
 	}
 }
 
 func (r *Rover) colUpdate(){
 	if r.heading == "E" {
-		r.column = r.column + 1
-    if r.column == 10 {
-      r.column = 0
-    }
+    r.increaseColumnValue()
 	}
 	if r.heading == "W" {
-		r.column = r.column - 1
-    if r.column == -1{
-      r.column = 9
-    }
+    r.decreaseColumnValue()
 	}
 }
 
 func (r *Rover) headingUpdate(direction string) {
 	if direction == "L" {
+    r.leftCommanded()
+	}
+	if direction == "R" {
+    r.rightCommanded()
+	}
+}
+
+func (r *Rover) increaseRowValue(){
+		r.row = r.row + 1
+    if r.row == 10 {
+      r.row = 0
+    }
+} 
+func (r *Rover) decreaseRowValue(){
+		r.row = r.row - 1
+    if r.row == -1{
+      r.row = 9
+    }
+}
+
+func (r *Rover) increaseColumnValue(){
+		r.column = r.column + 1
+    if r.column == 10 {
+      r.column = 0
+    }
+} 
+func (r *Rover) decreaseColumnValue(){
+		r.column = r.column - 1
+    if r.column == -1{
+      r.column = 9
+    }
+}
+
+func (r *Rover) leftCommanded(){
 		if r.heading == "N" {
 			r.heading = "W"
 		} else if (r.heading == "W") {
@@ -84,8 +96,9 @@ func (r *Rover) headingUpdate(direction string) {
 		} else if (r.heading == "E") {
 			r.heading = "N"
 		}
-	}
-	if direction == "R" {
+}
+
+func (r *Rover) rightCommanded(){
 		if (r.heading == "N") {
 			r.heading = "E"
 		} else if (r.heading == "W") {
@@ -95,5 +108,4 @@ func (r *Rover) headingUpdate(direction string) {
 		} else if (r.heading == "E") {
 			r.heading = "S"
 		}
-	}
 }
