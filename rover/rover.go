@@ -4,90 +4,96 @@ import (
 	"fmt"
 )
 
-type rover struct {
+type Rover struct {
 	column  int
 	row     int
 	heading string
 }
 
 func main() {
-	// input := "MMRMMLM"
-	input := "MMMMMMMMMM"
+	input := "MMRMMLM"
+	// input := "MMMMMMMMMM"
 
-	mars := rover{
-		row:     0,
-		column:  0,
-		heading: "N",
-	}
-
-	parseInput(input, &mars)
-	fmt.Println(mars)
+  mars := new(Rover)
+  mars.Init()
+	mars.CommandRover(input)
+  mars.GetPosition()
 }
 
-func parseInput(input string, mars *rover) {
+func (r *Rover) Init(){
+  r.row = 0
+  r.column = 0
+  r.heading = "N"
+}
+
+func (r *Rover) GetPosition(){
+  fmt.Printf("%d:%d:%s \n",r.column,r.row,r.heading)
+}
+
+func (r *Rover) CommandRover(input string) {
 	for i := 0; i < len(input); i++ {
 		command := string(input[i])
 		if command == "M" {
-			rowUpdate(mars)
-			colUpdate(mars)
+			r.rowUpdate()
+			r.colUpdate()
 		}
 		if command == "R" || command == "L" {
-			headingUpdate(mars, command)
+			r.headingUpdate(command)
 		}
 	}
 }
 
-func rowUpdate(mars *rover) {
-	if mars.heading == "N" {
-		mars.row = mars.row + 1
-    if mars.row == 10 {
-      mars.row = 0
+func (r *Rover) rowUpdate() {
+	if r.heading == "N" {
+		r.row = r.row + 1
+    if r.row == 10 {
+      r.row = 0
     }
 	}
-	if mars.heading == "S" {
-		mars.row = mars.row - 1
-    if mars.row == -1{
-      mars.row = 9
-    }
-	}
-}
-
-func colUpdate(mars *rover) {
-	if mars.heading == "E" {
-		mars.column = mars.column + 1
-    if mars.column == 10 {
-      mars.column = 0
-    }
-	}
-	if mars.heading == "W" {
-		mars.column = mars.column - 1
-    if mars.column == -1{
-      mars.column = 9
+	if r.heading == "S" {
+		r.row = r.row - 1
+    if r.row == -1{
+      r.row = 9
     }
 	}
 }
 
-func headingUpdate(mars *rover, direction string) {
+func (r *Rover) colUpdate(){
+	if r.heading == "E" {
+		r.column = r.column + 1
+    if r.column == 10 {
+      r.column = 0
+    }
+	}
+	if r.heading == "W" {
+		r.column = r.column - 1
+    if r.column == -1{
+      r.column = 9
+    }
+	}
+}
+
+func (r *Rover) headingUpdate(direction string) {
 	if direction == "L" {
-		if mars.heading == "N" {
-			mars.heading = "W"
-		} else if (mars.heading == "W") {
-			mars.heading = "S"
-		} else if (mars.heading == "S") {
-			mars.heading = "E"
-		} else if (mars.heading == "E") {
-			mars.heading = "N"
+		if r.heading == "N" {
+			r.heading = "W"
+		} else if (r.heading == "W") {
+			r.heading = "S"
+		} else if (r.heading == "S") {
+			r.heading = "E"
+		} else if (r.heading == "E") {
+			r.heading = "N"
 		}
 	}
 	if direction == "R" {
-		if (mars.heading == "N") {
-			mars.heading = "E"
-		} else if (mars.heading == "W") {
-			mars.heading = "N"
-		} else if (mars.heading == "S") {
-			mars.heading = "W"
-		} else if (mars.heading == "E") {
-			mars.heading = "S"
+		if (r.heading == "N") {
+			r.heading = "E"
+		} else if (r.heading == "W") {
+			r.heading = "N"
+		} else if (r.heading == "S") {
+			r.heading = "W"
+		} else if (r.heading == "E") {
+			r.heading = "S"
 		}
 	}
 }
