@@ -6,8 +6,7 @@ func main() {
 	input := "MMRMMLM"
 	// input := "MMMMMMMMMM"
 
-  mars := new(rover.Rover)
-  mars.Init()
+	mars := rover.NewRover()
 	mars.CommandRover(input)
-  mars.GetPosition()
+	mars.GetPosition()
 }
