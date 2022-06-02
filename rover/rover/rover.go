@@ -4,22 +4,35 @@ import (
 	"fmt"
 )
 
+type direction int
+
+const (
+	north direction = iota
+	west
+	south
+	east
+)
+
+func (d direction) String() string {
+	return [...]string{"N", "W", "S", "E"}[d]
+}
+
 type Rover struct {
 	column  int
 	row     int
-	heading string
+	heading direction
 }
 
 func NewRover() *Rover {
 	return &Rover{
 		row:     0,
 		column:  0,
-		heading: "N",
+		heading: north,
 	}
 }
 
 func (r *Rover) GetPosition() {
-	fmt.Printf("%d:%d:%s \n", r.column, r.row, r.heading)
+	fmt.Printf("%d:%d:%s \n", r.column, r.row, r.heading.String())
 }
 
 func (r *Rover) CommandRover(input string) {
@@ -36,20 +49,20 @@ func (r *Rover) CommandRover(input string) {
 }
 
 func (r *Rover) rowUpdate() {
-	if r.heading == "N" {
-		r.increaseRowValue()
+	if r.heading == north {
+		increaseCoordinate(&r.row)
 	}
-	if r.heading == "S" {
-		r.decreaseRowValue()
+	if r.heading == south {
+		decreaseCoordinate(&r.row)
 	}
 }
 
 func (r *Rover) colUpdate() {
-	if r.heading == "E" {
-		r.increaseColumnValue()
+	if r.heading == east {
+		increaseCoordinate(&r.column)
 	}
-	if r.heading == "W" {
-		r.decreaseColumnValue()
+	if r.heading == west {
+		decreaseCoordinate(&r.column)
 	}
 }
 
@@ -62,52 +75,31 @@ func (r *Rover) headingUpdate(direction string) {
 	}
 }
 
-func (r *Rover) increaseRowValue() {
-	r.row = r.row + 1
-	if r.row == 10 {
-		r.row = 0
-	}
-}
-func (r *Rover) decreaseRowValue() {
-	r.row = r.row - 1
-	if r.row == -1 {
-		r.row = 9
-	}
-}
-
-func (r *Rover) increaseColumnValue() {
-	r.column = r.column + 1
-	if r.column == 10 {
-		r.column = 0
-	}
-}
-func (r *Rover) decreaseColumnValue() {
-	r.column = r.column - 1
-	if r.column == -1 {
-		r.column = 9
-	}
-}
-
 func (r *Rover) leftCommanded() {
-	if r.heading == "N" {
-		r.heading = "W"
-	} else if r.heading == "W" {
-		r.heading = "S"
-	} else if r.heading == "S" {
-		r.heading = "E"
-	} else if r.heading == "E" {
-		r.heading = "N"
+	if r.heading == east {
+		r.heading = north
+		return
+	}
+	r.heading = r.heading + 1
+}
+func (r *Rover) rightCommanded() {
+	if r.heading == north {
+		r.heading = east
+		return
+	}
+	r.heading = r.heading - 1
+}
+
+func increaseCoordinate(val *int) {
+	*val = *val + 1
+	if *val == 10 {
+		*val = 0
 	}
 }
 
-func (r *Rover) rightCommanded() {
-	if r.heading == "N" {
-		r.heading = "E"
-	} else if r.heading == "W" {
-		r.heading = "N"
-	} else if r.heading == "S" {
-		r.heading = "W"
-	} else if r.heading == "E" {
-		r.heading = "S"
+func decreaseCoordinate(val *int) {
+	*val = *val - 1
+	if *val == -1 {
+		*val = 9
 	}
 }
