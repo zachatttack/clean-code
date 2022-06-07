@@ -1,6 +1,6 @@
 package main
 
-import rover "myrover/rover"
+import rover "github.com/zachatttack/clean-code/vehicle"
 
 func main() {
 	input := "MMRMMLM"

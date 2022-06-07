@@ -1,4 +1,4 @@
-package rover
+package vehicle
 
 import (
 	"fmt"
