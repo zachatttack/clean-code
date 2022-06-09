@@ -14,15 +14,24 @@ const (
 	east
 )
 
+type coordinate int
+
+const (
+	col coordinate = iota
+	row
+)
+
 func (d direction) String() string {
 	return [...]string{"N", "W", "S", "E"}[d]
 }
 
+
 type grid [10][10]int
+type roverPosition [2]int
 
 type Rover struct {
-	column  int
-	row     int
+	position  roverPosition
+	prevPosition  roverPosition
 	heading direction
   grid grid
 }
@@ -30,8 +39,8 @@ type Rover struct {
 
 func NewRover() *Rover {
 	return &Rover{
-		row:     0,
-		column:  0,
+    position: roverPosition{},
+    prevPosition: roverPosition{},
 		heading: north,
     grid: grid{},
 	}
@@ -42,15 +51,16 @@ func (r *Rover) AddObstacle(col int, row int){
 }
 
 func (r Rover) GetPosition() {
-	fmt.Printf("%d:%d:%s \n", r.column, r.row, r.heading.String())
+	fmt.Printf("%d:%d:%s \n", r.position[col], r.position[row], r.heading.String())
 }
 
 func (r Rover) ObstacleHit() error{
-  return fmt.Errorf("%s:%d:%d:%s \n", "O", r.column, r.row, r.heading.String())
+  return fmt.Errorf("%s:%d:%d:%s \n", "O", r.prevPosition[col], r.prevPosition[row], r.heading.String())
 }
 
 func (r *Rover) CommandRover(input string) error{
 	for i := 0; i < len(input); i++ {
+    r.prevPosition = r.position
 		command := string(input[i])
 		if command == "M" {
       r.rowUpdate()
@@ -68,7 +78,7 @@ func (r *Rover) CommandRover(input string) error{
 }
 
 func (r Rover)checkForObstacles() error{
-  if (r.grid[r.column][r.row] == 1){
+  if (r.grid[r.position[col]][r.position[row]] == 1){
     return errors.New("ObstacleHit")
   }
   return nil
@@ -76,19 +86,19 @@ func (r Rover)checkForObstacles() error{
 
 func (r *Rover) rowUpdate() {
 	if r.heading == north {
-		increaseCoordinate(&r.row)
+		increaseCoordinate(&r.position[row])
 	}
 	if r.heading == south {
-		decreaseCoordinate(&r.row)
+		decreaseCoordinate(&r.position[row])
 	}
 }
 
 func (r *Rover) colUpdate() {
 	if r.heading == east {
-		increaseCoordinate(&r.column)
+		increaseCoordinate(&r.position[col])
 	}
 	if r.heading == west {
-		decreaseCoordinate(&r.column)
+		decreaseCoordinate(&r.position[col])
 	}
 }
 
