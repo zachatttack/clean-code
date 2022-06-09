@@ -6,7 +6,6 @@ import (
 )
 
 type direction int
-
 const (
 	north direction = iota
 	west
@@ -15,18 +14,20 @@ const (
 )
 
 type coordinate int
-
 const (
 	col coordinate = iota
 	row
 )
+
+const obstacle = 1
+const gridSize = 10
 
 func (d direction) String() string {
 	return [...]string{"N", "W", "S", "E"}[d]
 }
 
 
-type grid [10][10]int
+type grid [gridSize][gridSize]int
 type roverPosition [2]int
 
 type Rover struct {
@@ -47,7 +48,7 @@ func NewRover() *Rover {
 }
 
 func (r *Rover) AddObstacle(col int, row int){
-   r.grid[col][row] = 1
+   r.grid[col][row] = obstacle
 }
 
 func (r Rover) GetPosition() {
@@ -78,7 +79,7 @@ func (r *Rover) CommandRover(input string) error{
 }
 
 func (r Rover)checkForObstacles() error{
-  if (r.grid[r.position[col]][r.position[row]] == 1){
+  if (r.grid[r.position[col]][r.position[row]] == obstacle){
     return errors.New("ObstacleHit")
   }
   return nil
@@ -128,7 +129,7 @@ func (r *Rover) rightCommanded() {
 
 func increaseCoordinate(val *int) {
 	*val = *val + 1
-	if *val == 10 {
+	if *val == gridSize {
 		*val = 0
 	}
 }
@@ -136,6 +137,6 @@ func increaseCoordinate(val *int) {
 func decreaseCoordinate(val *int) {
 	*val = *val - 1
 	if *val == -1 {
-		*val = 9
+		*val = gridSize - 1
 	}
 }
