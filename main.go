@@ -1,6 +1,10 @@
 package main
 
-import rover "github.com/zachatttack/clean-code/vehicle"
+import (
+	"fmt"
+
+	rover "github.com/zachatttack/clean-code/vehicle"
+)
 
 func main() {
 	input := "MMRMMLM"
@@ -9,6 +13,10 @@ func main() {
 	// input := "MMMMMMMMMM"
 
 	mars := rover.NewRover()
-	mars.CommandRover(input)
+  err := mars.CommandRover(input)
+  if (err != nil){
+    fmt.Println(err)
+    return
+  }
 	mars.GetPosition()
 }
