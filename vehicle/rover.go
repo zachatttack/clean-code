@@ -1,11 +1,12 @@
 package vehicle
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
 )
 
 type direction int
+
 const (
 	north direction = iota
 	west
@@ -14,6 +15,7 @@ const (
 )
 
 type coordinate int
+
 const (
 	col coordinate = iota
 	row
@@ -26,63 +28,61 @@ func (d direction) String() string {
 	return [...]string{"N", "W", "S", "E"}[d]
 }
 
-
 type grid [gridSize][gridSize]int
 type roverPosition [2]int
 
 type Rover struct {
-	position  roverPosition
-	prevPosition  roverPosition
-	heading direction
-  grid grid
+	position     roverPosition
+	prevPosition roverPosition
+	heading      direction
+	grid         grid
 }
-
 
 func NewRover() *Rover {
 	return &Rover{
-    position: roverPosition{},
-    prevPosition: roverPosition{},
-		heading: north,
-    grid: grid{},
+		position:     roverPosition{},
+		prevPosition: roverPosition{},
+		heading:      north,
+		grid:         grid{},
 	}
 }
 
-func (r *Rover) AddObstacle(col int, row int){
-   r.grid[col][row] = obstacle
+func (r *Rover) AddObstacle(col int, row int) {
+	r.grid[col][row] = obstacle
 }
 
 func (r Rover) GetPosition() {
 	fmt.Printf("%d:%d:%s \n", r.position[col], r.position[row], r.heading.String())
 }
 
-func (r Rover) ObstacleHit() error{
-  return fmt.Errorf("%s:%d:%d:%s \n", "O", r.prevPosition[col], r.prevPosition[row], r.heading.String())
+func (r Rover) ObstacleHit() error {
+	return fmt.Errorf("%s:%d:%d:%s \n", "O", r.prevPosition[col], r.prevPosition[row], r.heading.String())
 }
 
-func (r *Rover) CommandRover(input string) error{
+func (r *Rover) CommandRover(input string) error {
 	for i := 0; i < len(input); i++ {
-    r.prevPosition = r.position
+		r.prevPosition = r.position
 		command := string(input[i])
 		if command == "M" {
-      r.rowUpdate()
-      r.colUpdate()
-      err := r.checkForObstacles()
-      if (err != nil){
-        return r.ObstacleHit()
-      }
+			r.rowUpdate()
+			r.colUpdate()
+			err := r.checkForObstacles()
+			if err != nil {
+				return r.ObstacleHit()
+			}
 		}
 		if command == "R" || command == "L" {
 			r.headingUpdate(command)
 		}
 	}
-  return nil
+	return nil
 }
 
-func (r Rover)checkForObstacles() error{
-  if (r.grid[r.position[col]][r.position[row]] == obstacle){
-    return errors.New("ObstacleHit")
-  }
-  return nil
+func (r Rover) checkForObstacles() error {
+	if r.grid[r.position[col]][r.position[row]] == obstacle {
+		return errors.New("ObstacleHit")
+	}
+	return nil
 }
 
 func (r *Rover) rowUpdate() {
