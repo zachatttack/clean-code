@@ -37,24 +37,28 @@ func NewRover() *Rover {
 	}
 }
 
+func (r *Rover) AddObstacle(col int, row int){
+   r.grid[col][row] = 1
+}
+
 func (r Rover) GetPosition() {
 	fmt.Printf("%d:%d:%s \n", r.column, r.row, r.heading.String())
 }
 
-func (r Rover) ObstacleHit() {
-  fmt.Printf("%s:%d:%d:%s \n", "O", r.column, r.row, r.heading.String())
+func (r Rover) ObstacleHit() error{
+  return fmt.Errorf("%s:%d:%d:%s \n", "O", r.column, r.row, r.heading.String())
 }
 
 func (r *Rover) CommandRover(input string) error{
 	for i := 0; i < len(input); i++ {
 		command := string(input[i])
 		if command == "M" {
-      err := r.checkForObstacles()
-      if (err != nil){
-        return fmt.Errorf("obstacle hit")
-      }
       r.rowUpdate()
       r.colUpdate()
+      err := r.checkForObstacles()
+      if (err != nil){
+        return r.ObstacleHit()
+      }
 		}
 		if command == "R" || command == "L" {
 			r.headingUpdate(command)
@@ -64,7 +68,10 @@ func (r *Rover) CommandRover(input string) error{
 }
 
 func (r Rover)checkForObstacles() error{
-  return errors.New("ObstacleHit")
+  if (r.grid[r.column][r.row] == 1){
+    return errors.New("ObstacleHit")
+  }
+  return nil
 }
 
 func (r *Rover) rowUpdate() {
