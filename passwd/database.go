@@ -4,25 +4,50 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 )
 
-// void SetPassword(username, newPassword);
-// bool TestPassword(username, passwordToTry);
-// string[] GetUsers(void);
-// Date GetLastPasswordChange(username);
-// void DeleteUser(username, passwordToTry);
+type user struct {
+	name      string
+	password  string
+	timestamp time.Time
+}
 
-func ReadFile(){
-  file, err := os.Open("database.txt") 
-  if err != nil {
-    log.Fatal(err)
-  }
+func SetPassword() {
+	return
+}
 
-  data :=make([]byte,100)
-  count, err := file.Read(data)
-  if err != nil {
-    log.Fatal(err)
-  }
+func TestPassword() bool {
+	return false
+}
 
-  fmt.Printf("%q\n", data[:count])
+func GetUsers() []string {
+	users := []string{}
+
+	return users
+}
+
+func GetLastPasswordChange() time.Time {
+	date := time.Now()
+
+	return date
+}
+
+func DeleteUser() {
+	return
+}
+
+func ReadFile() {
+	file, err := os.Open("database.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	data := make([]byte, 100)
+	count, err := file.Read(data)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("%q\n", data[:count])
 }
