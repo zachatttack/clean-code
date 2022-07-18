@@ -1,9 +1,8 @@
 package main
 
 import (
-	"fmt"
-
 	passwd "github.com/zachatttack/clean-code/passwd"
+	"fmt"
 )
 
 func main() {
@@ -12,5 +11,10 @@ func main() {
   users = passwd.GetUsers()
   fmt.Printf("%s\n",users)
 
-  return   
+  time := passwd.GetLastPasswordChange("user1")
+  fmt.Printf("%s\n",time)
+
+  fmt.Printf("%t\n", passwd.TestPassword("user1", "password1"))
+  fmt.Printf("%t\n", passwd.TestPassword("user2", "password1"))
+
 }
