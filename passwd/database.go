@@ -23,14 +23,17 @@ func SetPassword() {
 }
 
 func TestPassword() bool {
+  fmt.Println("test")
 	return false
 }
 
 func GetUsers() []string {
-  for i := range users {
-    name[i] = users[i].name 
+  readFile()
+  var usernames = []string {}
+  for i := 0; i < userCount; i++{
+    usernames = append(usernames, users[i].name)
   }
-	return name
+	return usernames
 }
 
 func GetLastPasswordChange() time.Time {
@@ -43,7 +46,7 @@ func DeleteUser() {
 	return
 }
 
-func ReadFile() {
+func readFile() {
 	file, err := os.Open("database.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -52,7 +55,7 @@ func ReadFile() {
 
 	scanner := bufio.NewScanner(file)
 
-  var userString [100]string
+  var userString [3]string
 
 	for scanner.Scan() {
     userString[userCount] = scanner.Text()
@@ -66,14 +69,14 @@ func ReadFile() {
 		// fmt.Printf("%s\n", time.Now())
 	}
 
-  fmt.Printf("%s  \n", users[0].name)
-  fmt.Printf("%s  \n", users[1].name)
-
-  fmt.Printf("%s  \n", users[0].password)
-  fmt.Printf("%s  \n", users[1].password)
-
-  fmt.Printf("%s  \n", users[0].timestamp)
-  fmt.Printf("%s  \n", users[1].timestamp)
+  // fmt.Printf("%s  \n", users[0].name)
+  // fmt.Printf("%s  \n", users[1].name)
+  //
+  // fmt.Printf("%s  \n", users[0].password)
+  // fmt.Printf("%s  \n", users[1].password)
+  //
+  // fmt.Printf("%s  \n", users[0].timestamp)
+  // fmt.Printf("%s  \n", users[1].timestamp)
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
