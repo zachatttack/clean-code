@@ -18,5 +18,6 @@ func main() {
   fmt.Printf("%t\n", passwd.TestPassword("user2", "password1"))
 
   passwd.AddUser("testadd", "addpass")
+  passwd.SetPassword("user1", "newpassword")
 
 }

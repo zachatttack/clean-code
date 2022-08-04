@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 	"strings"
-  "time"
+	"time"
 )
 
 type user struct {
@@ -18,7 +18,17 @@ type user struct {
 var users = [100]user{}
 var userCount = 0
 
-func SetPassword() {
+func SetPassword(username string, newPassword string) {
+	readFile()
+
+	for i := 0; i < userCount; i++ {
+		if username == users[i].name {
+			users[i].password = newPassword
+			users[i].timestamp = time.Now().String()
+		}
+	}
+
+	writeFile()
 	return
 }
 
